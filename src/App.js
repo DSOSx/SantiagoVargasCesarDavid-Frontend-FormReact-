@@ -39,7 +39,7 @@ function App() {
       <form onSubmit={BuscarCliente}>
       <h1>Devoluciones</h1>
       <p>Buscar si la venta existe</p>
-      <p>Nombre del cliente :</p>
+      <p>Nombre del cliente:</p>
       <input type="text" placeholder="Nombre del cliente" required onChange={GuardarNombreCampo}></input>
       <button>Buscar</button> 
       </form>
