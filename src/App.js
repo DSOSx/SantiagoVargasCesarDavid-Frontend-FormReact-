@@ -54,7 +54,7 @@ function App() {
               <th>costototal</th>
               <th>cantidadpagada</th>
               <th>cambio</th>
-              <th>observaciones</th>
+              <th>observaciones.</th>
               <th>idcliente</th>
               <th>idfactura</th>
               <th>Acción</th>
