@@ -92,6 +92,11 @@ function App() {
   function BuscarCliente(event){
     event.preventDefault();
 
+    fetch("https://servicio-autenticacion.herokuapp.com/login/admin/")
+    .then(response=>response.json())
+    .then(data=>console.log(data))
+    .then(error=>console.log(error))
+
     fetch("https://client-development.herokuapp.com/api/cliente/"+rfc)
     .then(response=>response.json())
     .then(data=>{
