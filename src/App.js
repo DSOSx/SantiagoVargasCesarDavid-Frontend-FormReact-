@@ -17,12 +17,15 @@ function App() {
   const [rfc,setrfc] = useState("rfc");
   const [datos,setdatos] = useState([]);
 
+  const [foliofactura,setfoliofactura] = useState("");
+  const [datos2,setdatos2] = useState([]);
+ 
   const [seguimiento,setseguimiento] = useState("x x x x");
 
   useEffect(() => {
     const interval = setInterval(() => {
       if(navigator.onLine){
-         setinternet("Si Hay Internet (El sistema esta funcionando porque detecto internet");
+         setinternet("Si Hay Internet (El sistema esta funcionando porque detecto internet)");
          tiempo=3000;
       } else {
          setinternet("No Hay Internet (El sistema no funciona si no hay internet)");
@@ -114,7 +117,7 @@ function App() {
           }).then(
             function(isconfirm){
                 if(isconfirm){
-                  BuscarVenta(data.data.id);
+                  BuscarVenta(data.data.rfc);
                   setseguimiento("s x x x");
                 }
             });
@@ -123,7 +126,7 @@ function App() {
 
   }
 
-  function BuscarVenta(id){
+  function BuscarVenta(rfc){
     fetch("https://ventas-it-d.herokuapp.com/api/venta/")
     .then(response=>response.json())
     .then(data=>{
@@ -152,7 +155,7 @@ function App() {
                 var ventasdelcliente=[];
                 var contador=0;
                 for(var i=0;i<data.data.length;i=i+1){
-                  if(data.data[i].idCliente==id){
+                  if(data.data[i].rfc==rfc){
                     ventasdelcliente.push({
                       "id":data.data[i].id,
                       "folio":data.data[i].folio,
@@ -162,8 +165,7 @@ function App() {
                       "observaciones":data.data[i].observaciones,
                       "fecha":data.data[i].fecha,
                       "estado":data.data[i].estado,
-                      "estatusDelete":data.data[i].estatusDelete,
-                      "idCliente":data.data[i].idCliente,
+                      "rfc":data.data[i].rfc,
                       "idFactura":data.data[i].idFactura});
                       contador=contador+1;
                   }
@@ -204,19 +206,32 @@ function App() {
 
   function BuscarTarjeta(event){
        event.preventDefault();
-       var idventa = document.getElementById("idventa");
-       var idfactura = document.getElementById("idfactura");
+
        Swal.fire({
-         title: "El servidor de trajeta obtuvo con éxito la tarjeta del cliente "+idventa.value+" factura: "+idfactura.value,
-         imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
+         title: "Estas Seguro que quieres realizar esta acción????",
+         imageUrl: "https://www.lifeder.com/wp-content/uploads/2018/10/question-mark-2123967_640.jpg",
+         imageHeight: 200,
          imageWidth: 400,
-         imageHeight: 200
+         showCancelButton: true,
+         confirmButtonText: "Si, estoy seguro",
+         cancelButtonText: "Cancelar",
        }).then(function(isconfirm){
-         if(isconfirm){
-          BuscarRecibo(1292);
-          setseguimiento("s s s x");
-         }}
-       );
+         if(isconfirm.value){
+          Swal.fire({
+            title: "El servidor de trajeta obtuvo con éxito la tarjeta del cliente "+event.target[0].value+" factura: "+event.target[1].value,
+            imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
+            imageWidth: 400,
+            imageHeight: 200
+          }).then(function(isconfirm){
+            if(isconfirm){
+             BuscarRecibo(event.target[1].value);
+             setseguimiento("s s s x");
+            }}
+          );
+         } else {
+         }
+       });
+
   }
 
   function BuscarRecibo(idfactura){
@@ -267,6 +282,130 @@ function App() {
 
   }
 
+  function BusquedaPorRecibos(event){
+      event.preventDefault();
+      var mostrarventana = document.getElementById("Otraventana");
+      mostrarventana.click();
+  }
+
+  function GuardarFolioFactura(event){
+     setfoliofactura(event.target.value);
+  }
+
+  function BuscandoFacturitas(event){
+      event.preventDefault();
+      fetch("https://serviciofactura-development.herokuapp.com/api/v1/factura/"+foliofactura)
+    .then(response=>response.json())
+    .then(data=>{
+      if(data.data==null){
+          Swal.fire({
+            title: "El servidor de factura no encontró ninguna factura",
+            imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
+            imageWidth: 400,
+            imageHeight: 200
+          }).then(
+            function(isconfirm){
+                if(isconfirm){
+                  setdatos2([]);
+                }
+            });
+        } else {
+          Swal.fire({
+            title: "El servidor de factura si encontró factura",
+            imageUrl: "https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1",
+            imageWidth: 400,
+            imageHeight: 200
+          }).then(
+            function(isconfirm){
+                if(isconfirm){
+                    setdatos2([data.data]);
+                }
+            });
+        }})
+    //.catch(error=>console.log(error))
+  }
+  
+  function CancelarRecibodirectamente(event){
+      event.preventDefault();
+
+      Swal.fire({
+        title: "Estas Seguro que quieres realizar esta acción????",
+        imageUrl: "https://www.lifeder.com/wp-content/uploads/2018/10/question-mark-2123967_640.jpg",
+        imageHeight: 200,
+        imageWidth: 400,
+        showCancelButton: true,
+        confirmButtonText: "Si, estoy seguro",
+        cancelButtonText: "Cancelar",
+      }).then(function(isconfirm){
+        if(isconfirm.value){
+          Swal.fire({
+            title: "El servidor de trajeta obtuvo con éxito la tarjeta de la factura: "+event.target[0].value,
+            imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
+            imageWidth: 400,
+            imageHeight: 200
+          }).then(function(isconfirm){
+            if(isconfirm){
+             BuscarRecibo2(event.target[0].value);
+            }}
+          );
+        } else {
+        }
+      });
+
+  }
+
+  function BuscarRecibo2(idfactura){
+
+    fetch("https://serviciofactura-development.herokuapp.com/api/v1/factura/"+idfactura)
+    .then(response=>response.json())
+    .then(data=>{
+      if(data.data==null){
+          Swal.fire({
+            title: "El servidor de factura no encontró ninguna factura de ese cliente",
+            imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
+            imageWidth: 400,
+            imageHeight: 200
+          }).then(
+            function(isconfirm){
+                if(isconfirm){
+                }
+            });
+        } else {
+          Swal.fire({
+            title: "El servidor de factura si encontró factura de ese cliente",
+            imageUrl: "https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1",
+            imageWidth: 400,
+            imageHeight: 200
+          }).then(
+            function(isconfirm){
+                if(isconfirm){
+                  fetch("https://serviciofactura-development.herokuapp.com/api/v1/factura/estado/"+idfactura,{
+                    method: "put",
+                    headers: {'Content-type': 'application/json; charset=UTF-8'},
+                    body: JSON.stringify({estado: false})
+                  })
+                  .then(response=>response.json())
+                  .then(data=>{
+                    Swal.fire({
+                      title: "La factura "+idfactura+" se ha cancelado",
+                      imageUrl: "https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1",
+                      imageHeight: 200,
+                      imageWidth: 400,
+                    })
+                  })
+                  //.error(error=>console.log(error))
+                }
+            });
+        }})
+    //.catch(error=>console.log(error))
+
+  }
+
+  function VerCapturasCanceladas(event){
+      event.preventDefault();
+      alert("oie zi");
+  }
+
   return (
     <div>
 
@@ -283,7 +422,8 @@ function App() {
       <input type="password" placeholder="Contraseña" required onChange={GuardarContrasena} value="1234"></input><br></br>
       <button>Ingresar</button> 
       </form>
-    </div>}
+    </div>
+    }
 
     {desicion === 1 && 
     <div id="div2">
@@ -349,52 +489,58 @@ function App() {
 
         <img id="Imagenseguiento2" src="https://letrascursivas.com/wp-content/uploads/2020/08/letra-cursiva-mayuscula-r.jpg"></img>
       </div>}
+
       </div>
       <form onSubmit={BuscarCliente}>
       <h1>Devoluciones</h1>
-      <p>Buscar si la venta existe-</p>
+      <p>Buscar si la venta existe</p>
       <p>RFC del cliente:</p>
-      <input type="text" placeholder="rfc del cliente" required onChange={GuardarrfcCampo}></input>
-      <button>Buscar</button> 
-      <h2 id="internet">ventas que se obtuvieron de {rfc}</h2>
+      <input type="text" placeholder="rfc del cliente" required onChange={GuardarrfcCampo} id="input1"></input>
+      <button>Buscar Por ventas</button> 
       </form>
+      <form onSubmit={BusquedaPorRecibos}>
+      <button>Buscar Por Facturas</button>
+      </form>
+      <form onSubmit={VerCapturasCanceladas}>
+      <button>Ver Las Facturas Canceladas</button>
+      </form>
+
+      <h2 id="internet">ventas que se obtuvieron de {rfc}</h2>
       <div>
       <center>
-        <table>
-          <thead>
-            <tr>
-              <th>id</th>
-              <th>folio</th>
-              <th>fecha</th>
-              <th>estado</th>
-              <th>costototal</th>
-              <th>cantidadpagada</th>
-              <th>cambio</th>
-              <th>observaciones.</th>
-              <th>estatusDelete</th>
-              <th>idcliente</th>
-              <th>idfactura</th>
-              <th>Acción</th>
+        <table id="table1">
+          <thead id="thead1">
+            <tr id="tr1">
+              <th id="th1">Id Venta</th>
+              <th id="th1">Folio</th>
+              <th id="th1">Fecha</th>
+              <th id="th1">Estado</th>
+              <th id="th1">Costo Total</th>
+              <th id="th1">Cantidad Pagada</th>
+              <th id="th1">Cambio</th>
+              <th id="th1">Observaciones.</th>
+              <th id="th1">Rfc Cliente</th>
+              <th id="th1">Id Factura</th>
+              <th id="th1">Cancelar Factura</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tbody1">
             {Object.keys(datos).map((i)=>(
-            <tr key={datos[i].id}>
-            <td>{datos[i].id}</td>
-            <td>{datos[i].folio}</td>
-            <td>{datos[i].fecha}</td>
-            <td>{datos[i].estado}</td>
-            <td>{datos[i].costoTotal}</td>
-            <td>{datos[i].cantidadPagada}</td>
-            <td>{datos[i].cambio}</td>
-            <td>{datos[i].observaciones}</td>
-            <td>{datos[i].estatusDelete}</td>
-            <td>{datos[i].idCliente}</td>
-            <td>{datos[i].idFactura}</td>
-            <td>
+            <tr key={datos[i].id} id="tr1">
+            <td id="td1">{datos[i].id}</td>
+            <td id="td1">{datos[i].folio}</td>
+            <td id="td1">{datos[i].fecha}</td>
+            <td id="td1">{datos[i].estado}</td>
+            <td id="td1">{datos[i].costoTotal}</td>
+            <td id="td1">{datos[i].cantidadPagada}</td>
+            <td id="td1">{datos[i].cambio}</td>
+            <td id="td1">{datos[i].observaciones}</td>
+            <td id="td1">{datos[i].rfc}</td>
+            <td id="td1">{datos[i].idFactura}</td>
+            <td id="td1">
               <form onSubmit={BuscarTarjeta}>
-              <input type="text" id="idventa" value={datos[i].id} onChange={GuardarrfcCampo}></input>
-              <input type="text" id="idfactura" value={datos[i].idFactura} onChange={GuardarrfcCampo}></input>
+              <input type="text" id="idcliente" value={datos[i].rfc} onChange={BuscarTarjeta}></input>
+              <input type="text" id="idfactura" value={datos[i].idFactura} onChange={BuscarTarjeta}></input>
               <button>Realizar Devolución</button>
               </form>
             </td>
@@ -404,7 +550,72 @@ function App() {
         </table>
         </center>
       </div>
-    </div>}
+
+      <a id="Otraventana" href="#otro">dame click y aparezco</a>
+      <div id="otro">
+      <form onSubmit={BuscandoFacturitas}>
+      <h2 id="internet2">Buscar Facturas que se obtuvieron de {rfc}</h2>
+      <a href="#" id="salidadetabla">Regresar A la Tabla Anterior</a>
+      <p id="p144">Folio de la factura:</p>
+      <input type="text" placeholder="Folio de la factura" required onChange={GuardarFolioFactura} id="campo111"></input>
+      <button id="button2">Buscar</button> 
+      </form>
+        <center>
+        <table id="table2">
+          <thead id="thead2">
+          <tr id="tr2">
+              <th id="th2">Folio</th>
+              <th id="th2">Razon Social Empresa</th>
+              <th id="th2">Direccion</th>
+              <th id="th2">Cp</th>
+              <th id="th2">Correo</th>
+              <th id="th2">Telefono</th>
+              <th id="th2">Rfc</th>
+              <th id="th2">Regimen Fiscal</th>
+              <th id="th2">Fecha</th>
+              <th id="th2">Folio Fiscal</th>
+              <th id="th2">Certificado Digital</th>
+              <th id="th2">Serie Cerificado SAT</th>
+              <th id="th2">Estado</th>
+              <th id="th2">Id Pago</th>
+              <th id="th2">Id Cliente</th>
+              <th id="th2">Cancelar Recibo</th>
+            </tr>
+          </thead>
+          <tbody id="tbody2">
+            {Object.keys(datos2).map((j)=>(
+            <tr key={datos2[j].folio} id="tr2">
+            <td id="td2">{datos2[j].folio}</td>
+            <td id="td2">{datos2[j].razon_social_empresa}</td>
+            <td id="td2">{datos2[j].direccion}</td>
+            <td id="td2">{datos2[j].cp}</td>
+            <td id="td2">{datos2[j].correo}</td>
+            <td id="td2">{datos2[j].telefono}</td>
+            <td id="td2">{datos2[j].rfc}</td>
+            <td id="td2">{datos2[j].regimen_fiscal}</td>
+            <td id="td2">{datos2[j].fecha}</td>
+            <td id="td2">{datos2[j].folio_fiscal}</td>
+            <td id="td2">{datos2[j].certificado_digital}</td>
+            <td id="td2">{datos2[j].serie_cerificado_SAT}</td>
+            <td id="td2">{datos2[j].estado}</td>
+            <td id="td2">{datos2[j].idPago}</td>
+            <td id="td2">{datos2[j].idCliente}</td>
+            <td id="td2">
+              <form onSubmit={CancelarRecibodirectamente}>
+              <input type="text" id="idfactura2" value={datos2[j].folio} onChange={CancelarRecibodirectamente}></input>
+              <button>Cancelar Factura</button>
+              </form>
+            </td>
+            </tr>
+            ))}
+          </tbody>
+        </table>
+        </center>
+
+      </div>
+
+    </div>
+    }
     </div>
   );
 }
