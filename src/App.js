@@ -11,14 +11,16 @@ function App() {
 
   const [desicion,setdesicion] = useState(0);
 
-  const [usuario,setUsuario] = useState("Cesar");
-  const [contrasena,setcontrasena] = useState("1234");
+  const [usuario,setUsuario] = useState("");
+  const [contrasena,setcontrasena] = useState("");
 
   const [rfc,setrfc] = useState("rfc");
   const [datos,setdatos] = useState([]);
 
   const [foliofactura,setfoliofactura] = useState("");
   const [datos2,setdatos2] = useState([]);
+
+  const [datos3,setdatos3] = useState([]);
  
   const [seguimiento,setseguimiento] = useState("x x x x");
 
@@ -52,37 +54,62 @@ function App() {
 
   function Login(event){
      event.preventDefault();
-     if(usuario=="Cesar" && contrasena=="1234"){
-      Swal.fire({
-        title: "Bienvenido",
-        imageUrl: "https://p4.wallpaperbetter.com/wallpaper/917/971/718/welcome-neon-sign-yellow-snow-wallpaper-preview.jpg",
-        imageHeight: 200,
-        imageWidth: 400,
-        background: "black",
-        color: "white"
-     }).then(
-       function(isconfirm){
-         if(isconfirm){
-            setdesicion(1);
+
+     /*
+     fetch("https://servicio-autenticacion.herokuapp.com/login/register/",{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"nombre":"Nayeli",
+      "username":"Nayeli", "email":"Nayeli@correo.com",
+      "estado":"activo", "password":"12345678"})
+      })*/
+
+     fetch("https://servicio-autenticacion.herokuapp.com/login/auth/",{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"usernameOrEmail":usuario, "password":contrasena})
+      })
+     .then(response=>response.json())
+     .then(data=>{
+         if(data.data=="Credenciales incorrectas"){
+          Swal.fire({
+            title: "Datos Incorrectos",
+            imageUrl: "https://s3.envato.com/files/236563111/Error%20590x332.jpg",
+            imageHeight: 200,
+            imageWidth: 400,
+            background: "black",
+            color: "white"
+         }).then(
+           function(isconfirm){
+             if(isconfirm){
+              setdesicion(0);
+             }
+           }
+         );
+         } else {
+          Swal.fire({
+            title: "Bienvenido",
+            imageUrl: "https://p4.wallpaperbetter.com/wallpaper/917/971/718/welcome-neon-sign-yellow-snow-wallpaper-preview.jpg",
+            imageHeight: 200,
+            imageWidth: 400,
+            background: "black",
+            color: "white"
+         }).then(
+           function(isconfirm){
+             if(isconfirm){
+                setdesicion(1);
+             }
+           }
+         );
          }
-       }
-     );
-     } else {
-      Swal.fire({
-        title: "Datos Incorrectos",
-        imageUrl: "https://s3.envato.com/files/236563111/Error%20590x332.jpg",
-        imageHeight: 200,
-        imageWidth: 400,
-        background: "black",
-        color: "white"
-     }).then(
-       function(isconfirm){
-         if(isconfirm){
-          setdesicion(0);
-         }
-       }
-     );
-     }
+     })
+     //.catch(error=>console.log(error))
   }
   
   function GuardarrfcCampo(event){
@@ -91,11 +118,6 @@ function App() {
 
   function BuscarCliente(event){
     event.preventDefault();
-
-    fetch("https://servicio-autenticacion.herokuapp.com/login/admin/")
-    .then(response=>response.json())
-    .then(data=>console.log(data))
-    .then(error=>console.log(error))
 
     fetch("https://client-development.herokuapp.com/api/cliente/"+rfc)
     .then(response=>response.json())
@@ -222,17 +244,45 @@ function App() {
          cancelButtonText: "Cancelar",
        }).then(function(isconfirm){
          if(isconfirm.value){
+
           Swal.fire({
-            title: "El servidor de trajeta obtuvo con éxito la tarjeta del cliente "+event.target[0].value+" factura: "+event.target[1].value,
-            imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
-            imageWidth: 400,
-            imageHeight: 200
-          }).then(function(isconfirm){
-            if(isconfirm){
-             BuscarRecibo(event.target[1].value);
-             setseguimiento("s s s x");
-            }}
-          );
+            title: "Nombre: "+usuario,
+            input: "password",
+            showCancelButton: true,
+            confirmButtonText: "Confirmar",
+            cancelButtonText: "Cancelar",
+         })
+         .then(condiciones => {
+         if (condiciones.value) {
+           if(condiciones.value==contrasena){
+             Swal.fire({
+              title: "El servidor de trajeta obtuvo con éxito la tarjeta del cliente "+event.target[0].value+" factura: "+event.target[1].value,
+              imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
+              imageWidth: 400,
+              imageHeight: 200
+             }).then(function(isconfirm){
+               if(isconfirm){
+                BuscarRecibo(event.target[1].value);
+                setseguimiento("s s s x");
+               }}
+             );
+           } else {
+             Swal.fire({
+               title: "La contraseña no es correcta",
+               imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
+               imageWidth: 400,
+               imageHeight: 200
+             }).then(
+               function(isconfirm){
+                   if(isconfirm){
+                   }
+               });
+           }
+         } else {
+
+         }
+         });
+   
          } else {
          }
        });
@@ -280,6 +330,7 @@ function App() {
                   })
                   //.error(error=>console.log(error))
                    setseguimiento("s s s s");
+                   InsertarDatosEnLaBase(idfactura,data.data.fecha);
                 }
             });
         }})
@@ -343,16 +394,44 @@ function App() {
         cancelButtonText: "Cancelar",
       }).then(function(isconfirm){
         if(isconfirm.value){
+
           Swal.fire({
-            title: "El servidor de trajeta obtuvo con éxito la tarjeta de la factura: "+event.target[0].value,
-            imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
-            imageWidth: 400,
-            imageHeight: 200
-          }).then(function(isconfirm){
-            if(isconfirm){
-             BuscarRecibo2(event.target[0].value);
-            }}
-          );
+             title: "Nombre: "+usuario,
+             input: "password",
+             showCancelButton: true,
+             confirmButtonText: "Confirmar",
+             cancelButtonText: "Cancelar",
+          })
+          .then(condiciones => {
+          if (condiciones.value) {
+            if(condiciones.value==contrasena){
+              Swal.fire({
+                title: "El servidor de trajeta obtuvo con éxito la tarjeta de la factura: "+event.target[0].value,
+                imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
+                imageWidth: 400,
+                imageHeight: 200
+              }).then(function(isconfirm){
+                if(isconfirm){
+                 BuscarRecibo2(event.target[0].value);
+                }}
+              );
+            } else {
+              Swal.fire({
+                title: "La contraseña no es correcta",
+                imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
+                imageWidth: 400,
+                imageHeight: 200
+              }).then(
+                function(isconfirm){
+                    if(isconfirm){
+                    }
+                });
+            }
+          } else {
+
+          }
+          });
+
         } else {
         }
       });
@@ -399,6 +478,7 @@ function App() {
                     })
                   })
                   //.error(error=>console.log(error))
+                    InsertarDatosEnLaBase(idfactura,data.data.fecha);
                 }
             });
         }})
@@ -408,7 +488,71 @@ function App() {
 
   function VerCapturasCanceladas(event){
       event.preventDefault();
-      alert("oie zi");
+      var cargar = document.getElementById("Otraventana2");
+      cargar.click();
+      fetch("https://sprint-boot-devoluciones.herokuapp.com/get")
+      .then(response=>response.json())
+      .then(data=>{
+        if(data==null){
+            /*Swal.fire({
+              title: "El servidor de factura no encontró ninguna factura",
+              imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
+              imageWidth: 400,
+              imageHeight: 200
+            }).then(
+              function(isconfirm){
+                  if(isconfirm){
+                    setdatos2([]);
+                  }
+              });*/
+              setdatos3([]);
+          } else {
+            /*Swal.fire({
+              title: "El servidor de factura si encontró factura",
+              imageUrl: "https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1",
+              imageWidth: 400,
+              imageHeight: 200
+            }).then(
+              function(isconfirm){
+                  if(isconfirm){
+                      setdatos2([data.data]);
+                  }
+              });*/
+              setdatos3(data);
+          }
+
+        })
+      //.catch(error=>console.log(error))
+  }
+
+  function InsertarDatosEnLaBase(idfactura,fechafactura){
+    let date = new Date()
+    let fecha = null;
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    if(month < 10){
+    fecha=(`${year}-0${month}-${day}`)
+    }else{
+    fecha=(`${year}-${month}-${day}`)
+    }
+  
+    fetch("https://sprint-boot-devoluciones.herokuapp.com/post",{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+		"rfccliente": "LDDLDL",
+		"rfcfacturacion": idfactura,
+		"idventa": "333",
+		"nombrecancelo": usuario,
+		"fechacancelacion": fecha,
+		"fechafacturacion": fechafactura
+	})})
+     .then(response=>response.json())
+     .then(data=>console.log(data))
   }
 
   return (
@@ -422,9 +566,9 @@ function App() {
       <h1>LOGIN</h1>
       <img id="loginimagen" src="https://wallpapercave.com/wp/wp8008142.jpg"></img><br></br>
       <p>Usuario</p>
-      <input type="text" placeholder="Usuario" required onChange={GuardarUsuario} value="Cesar"></input><br></br>
+      <input type="text" placeholder="Usuario" required onChange={GuardarUsuario}></input><br></br>
       <p>Contraseña</p>
-      <input type="password" placeholder="Contraseña" required onChange={GuardarContrasena} value="1234"></input><br></br>
+      <input type="password" placeholder="Contraseña" required onChange={GuardarContrasena}></input><br></br>
       <button>Ingresar</button> 
       </form>
     </div>
@@ -432,6 +576,7 @@ function App() {
 
     {desicion === 1 && 
     <div id="div2">
+    <h2><a href="./index.html">Cerrar Sesion</a></h2>
       <div>
       {seguimiento === 'x x x x' && <div>
         <img id="Imagenseguiento1" src="http://blog.xtipografias.com/wp-content/uploads/2017/05/cheque-1.png"></img>
@@ -498,6 +643,7 @@ function App() {
       </div>
       <form onSubmit={BuscarCliente}>
       <h1>Devoluciones</h1>
+      <p>%% Bienvenido: {usuario} %%</p>
       <p>Buscar si la venta existe</p>
       <p>RFC del cliente:</p>
       <input type="text" placeholder="rfc del cliente" required onChange={GuardarrfcCampo} id="input1"></input>
@@ -583,7 +729,7 @@ function App() {
               <th id="th2">Serie Cerificado SAT</th>
               <th id="th2">Estado</th>
               <th id="th2">Id Pago</th>
-              <th id="th2">Id Cliente</th>
+              <th id="th2">Rfc Cliente</th>
               <th id="th2">Cancelar Recibo</th>
             </tr>
           </thead>
@@ -591,26 +737,57 @@ function App() {
             {Object.keys(datos2).map((j)=>(
             <tr key={datos2[j].folio} id="tr2">
             <td id="td2">{datos2[j].folio}</td>
-            <td id="td2">{datos2[j].razon_social_empresa}</td>
+            <td id="td2">{datos2[j].razonSocialEmpresa}</td>
             <td id="td2">{datos2[j].direccion}</td>
             <td id="td2">{datos2[j].cp}</td>
             <td id="td2">{datos2[j].correo}</td>
             <td id="td2">{datos2[j].telefono}</td>
             <td id="td2">{datos2[j].rfc}</td>
-            <td id="td2">{datos2[j].regimen_fiscal}</td>
+            <td id="td2">{datos2[j].regimenFiscal}</td>
             <td id="td2">{datos2[j].fecha}</td>
-            <td id="td2">{datos2[j].folio_fiscal}</td>
-            <td id="td2">{datos2[j].certificado_digital}</td>
-            <td id="td2">{datos2[j].serie_cerificado_SAT}</td>
+            <td id="td2">{datos2[j].folioFiscal}</td>
+            <td id="td2">{datos2[j].certificadoDigital}</td>
+            <td id="td2">{datos2[j].serieCertificadoSat}</td>
             <td id="td2">{datos2[j].estado}</td>
             <td id="td2">{datos2[j].idPago}</td>
-            <td id="td2">{datos2[j].idCliente}</td>
+            <td id="td2">{datos2[j].rfcCliente}</td>
             <td id="td2">
               <form onSubmit={CancelarRecibodirectamente}>
               <input type="text" id="idfactura2" value={datos2[j].folio} onChange={CancelarRecibodirectamente}></input>
               <button>Cancelar Factura</button>
               </form>
             </td>
+            </tr>
+            ))}
+          </tbody>
+        </table>
+        </center>
+
+      </div>
+
+      <a id="Otraventana2" href="#otro2">dame click y aparezco</a>
+      <div id="otro2">
+      <h2 id="internet3">Cancelaciones de facturas</h2>
+      <a href="#" id="salidadetabla">Regresar A la Tabla Anterior</a>
+        <center>
+        <table id="table3">
+          <thead id="thead3">
+          <tr id="tr3">
+              <th id="th3">Id</th>
+              <th id="th3">Rfc Facturacion</th>
+              <th id="th3">Responsable de la cancelación</th>
+              <th id="th3">Fecha de cancelacion</th>
+              <th id="th3">Fecha de facturacion</th>
+            </tr>
+          </thead>
+          <tbody id="tbody3">
+            {Object.keys(datos3).map((k)=>(
+            <tr key={datos3[k].id} id="tr3">
+            <td id="td3">{datos3[k].id}</td>
+            <td id="td3">{datos3[k].rfcfacturacion}</td>
+            <td id="td3">{datos3[k].nombrecancelo}</td>
+            <td id="td3">{datos3[k].fechacancelacion}</td>
+            <td id="td3">{datos3[k].fechafacturacion}</td>
             </tr>
             ))}
           </tbody>
