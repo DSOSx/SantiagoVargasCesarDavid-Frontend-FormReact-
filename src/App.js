@@ -57,19 +57,29 @@ function App() {
   function Login(event){
      event.preventDefault();
 
-     /*fetch("https://autenticacion-t.herokuapp.com/login/register",{
+      /*fetch("https://autenticacion-p.herokuapp.com/login/register",{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({"nombre":"Rolando",
-      "username":"Rolando", "email":"Rolando@correo.com",
+      body: JSON.stringify({"nombre":"Cesar",
+      "username":"Cesar", "email":"Cesar@correo.com",
       "estado":"activo", "password":"12345678"})
-      })
-      */
+      })*/ 
+      
 
-     fetch("https://autenticacion-t.herokuapp.com/login/auth/user",{
+      /*fetch("https://client-app-d.herokuapp.com/api/cliente/",{
+        method: 'GET', 
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': token
+        }})
+      .then(response=>response.json())
+      .then(data=>console.log(data))
+      .catch(e => console.log(e));*/
+
+      fetch("https://autenticacion-p.herokuapp.com/login/auth/user",{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -135,7 +145,12 @@ function App() {
   function BuscarCliente(event){
     event.preventDefault();
 
-    fetch("https://client-development.herokuapp.com/api/cliente/"+rfc)
+    fetch("https://client-app-d.herokuapp.com/api/cliente/"+rfc,{
+    method: 'GET', 
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': token
+    }})
     .then(response=>response.json())
     .then(data=>{
       if(data.data==null){
@@ -171,7 +186,7 @@ function App() {
 
   function BuscarVenta(rfc){
 
-    fetch("https://ventas-it-d.herokuapp.com/api/venta",{
+    fetch("https://ventas-it-t.herokuapp.com/api/venta",{
       method: 'GET', 
       headers: {
         'Content-type': 'application/json',
@@ -183,7 +198,7 @@ function App() {
       console.log(data);
     });
 
-    fetch("https://ventas-it-d.herokuapp.com/api/venta",{
+    fetch("https://ventas-it-t.herokuapp.com/api/venta",{
       method: 'GET', 
       headers: {
         'Content-type': 'application/json',
@@ -235,7 +250,7 @@ function App() {
                 if(contador<=0){
                   Swal.fire({
                     title: "El servidor de ventas no encontró ninguna venta de dicho cliente",
-                    imageUrl: "https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1",
+                    imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
                     imageWidth: 400,
                     imageHeight: 200
                   }).then(
@@ -269,7 +284,11 @@ function App() {
   function BuscarEnPagos(event){
        event.preventDefault();
 
-       fetch("https://payment-tester.herokuapp.com/api/payment/records")
+       fetch("https://payment-d.herokuapp.com/api/payment/records")
+       .then(response=>response.json())
+       .then(data=>console.log(data))
+
+       fetch("https://payment-d.herokuapp.com/api/payment/records")
        .then(response=>response.json())
        .then(data=>{
          var foliofacturas="";
@@ -293,7 +312,7 @@ function App() {
                   //setdatos(ventasdelcliente);
                   //setseguimiento("s s x x");
                   setseguimiento("s s s s x x");
-                  //foliofacturas="VENTA-23";
+                  //foliofacturas="VENTA-36";
                   ConfirmarCancelacion(foliofacturas);
                 }}
         );
