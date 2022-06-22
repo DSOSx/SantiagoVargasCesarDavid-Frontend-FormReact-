@@ -1,38 +1,557 @@
-.App {
-  text-align: center;
+body{
+    background-image: url("https://wallpaper.dog/large/10917391.jpg");
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#internet{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    font-size: 16px;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: black;
+    border: 3px solid white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#div1{
+    margin: 10px auto 10px auto;
+    padding: 10px 10px 10px 10px;
+    width: 270px;
+    background-image: url("https://wallpaper.dog/large/976554.jpg");
+    border: 3px solid white;
+    color: white;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#div1 p{
+    text-align: left;
+    font-size: 18px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
-.App-link {
-  color: #61dafb;
+#loginimagen{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    width: 200px;
+    height: 200px;
+    border: 3px solid white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#loginimagen:hover{
+    transform: scale(1.1);
+}
+
+#div2{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    background-image: url("https://wallpaper.dog/large/976554.jpg");
+    border: 3px solid white;
+    color: white;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@media screen and  (max-width: 992px) {
+    #div2{
+        margin: 10px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
+        width: 750px;
+        background-image: url("https://wallpaper.dog/large/976554.jpg");
+        border: 3px solid white;
+        color: white;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}
+
+#input1{
+    margin: 10px 10px 10px 10px;
+    padding: 5px 5px 5px 5px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 4px solid transparent;
+    background-color: transparent;
+    color: white;
+}
+
+#input1:focus{
+    outline: transparent;
+}
+
+#input1:hover{
+    border-bottom: 4px solid white;
+}
+
+button{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    background-color: black;
+    border: 3px solid white;
+}
+
+button:active {
+    background-color: red;
+}
+
+#table1{
+    margin: 10px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    width: 90%;
+    text-align: center;
+}
+
+#table1,#thead1,#tbody1,#tr1,#th1,#td1{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+}
+
+#tr1 #th1{
+    background-color: blue;
+}
+
+#tr1:hover #td1{
+    background-color: blue;
+    color: white;
+    border: 3px solid white;
+    transform: scale(1.15);
+}
+
+#Imagenseguiento1{
+    margin: 1px 1px 1px 1px;
+    padding: 1px 1px 1px 1px;
+    border: 3px solid red;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+#Imagenseguiento2{
+    margin: 1px 1px 1px 1px;
+    padding: 1px 1px 1px 1px;
+    border: 3px solid green;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+#Imagenseguiento3{
+    margin: 1px 1px 1px 1px;
+    padding: 1px 1px 1px 1px;
+    border: 3px solid transparent;
+    border-radius: 0%;
+    width: 50px;
+    height: 50px;
+}
+
+#Imagenseguiento1:hover{
+    transform: scale(1.2);
+}
+
+#Imagenseguiento2:hover{
+    transform: scale(1.2);
+}
+
+#Imagenseguiento3:hover{
+    transform: scale(1.2);
+    animation-name: AnimacionImagenseguiento3;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+#idcliente,#idfactura,#idfactura2{
+    display: none;
+}
+
+@keyframes AnimacionImagenseguiento3 {
+    25%{
+        transform: rotateX(45deg);
+    }
+    50%{
+        transform: rotateX(90deg);
+    }
+    75%{
+        transform: rotateX(135deg);
+    }
+    100%{
+        transform: rotateX(180deg);
+    }
+}
+
+#Otraventana{
+    display: none;
+}
+
+#otro{
+    margin: 0px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(1,1,1,0);
+    border: 3px solid transparent;
+    color: transparent;
+    transition: 2s;
+    pointer-events: none;
+    position: fixed;
+    overflow: scroll;
+}
+
+#otro:target{
+    pointer-events: all;
+    background: rgba(1,1,1,0.9);
+    border: 3px solid white;
+    color: white;
+}
+
+#table2{
+    margin: 10px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    width: 90%;
+    text-align: center;
+    display: grid;
+}
+ 
+#table2,#thead2,#tbody2,#tr2,#th2,#td2{
+    background-color: transparent;
+    color: transparent;
+    border: 3px solid transparent;
+    border-collapse: collapse;
+    display: block;
+}
+
+#otro:target #table2{
+    width: 90%;
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro:target #thead2{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro:target #tbody2{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro:target #tr2{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro:target #th2{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro:target #td2{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#tr2 #th2{
+    background-color: transparent;
+}
+
+#otro:target #tr2 #th2{
+    background-color: blue;
+}
+
+#otro:target #tr2:hover #td2{
+    background-color: purple;
+    color: white;
+    border: 3px solid white;
+    transform: scale(1.1);
+}
+
+#internet2{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: transparent;
+    font-size: 16px;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    border: 3px solid transparent;
+}
+
+#otro:target #internet2{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    font-size: 16px;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: black;
+    border: 3px solid white;
+    transition: 2s;
+}
+
+#p144{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: transparent;
+}
+
+#otro:target #p144{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    transition: 2s;
+}
+
+
+#button2{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: transparent;
+    background-color: transparent;
+    border: 3px solid transparent;
+}
+
+#otro:target #button2{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    background-color: black;
+    border: 3px solid white;
+    transition: 2s;
+}
+
+#otro:target #button2 :active {
+    background-color: red;
+}
+
+#campo111{
+    margin: 10px 10px 10px 10px;
+    padding: 5px 5px 5px 5px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 4px solid transparent;
+    background-color: transparent;
+    color: transparent;
+}
+
+#campo111::placeholder{
+    color: transparent;
+}
+
+#otro:target #campo111{
+    margin: 10px 10px 10px 10px;
+    padding: 5px 5px 5px 5px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 4px solid transparent;
+    background-color: transparent;
+    color: white;
+}
+
+#otro:target #campo111::placeholder{
+    color: gray;
+    transition: 2s;
+}
+
+#otro:target #campo111:focus{
+    outline: transparent;
+}
+
+#otro:target #campo111:hover{
+    border-bottom: 4px solid white;
+}
+
+#salidadetabla{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: transparent;
+    font-size: 16px;
+    font-family:'Times New Roman', Times, serif;
+}
+
+#otro:target #salidadetabla{
+    color: pink;
+    box-decoration-break: slice;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Otraventana2{
+    display: none;
+}
+
+#otro2{
+    margin: 0px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(1,1,1,0);
+    border: 3px solid transparent;
+    color: transparent;
+    transition: 2s;
+    pointer-events: none;
+    position: fixed;
+    overflow: scroll;
+}
+
+#otro2:target{
+    pointer-events: all;
+    background: rgba(1,1,1,0.9);
+    border: 3px solid white;
+    color: white;
+}
+
+#table3{
+    margin: 10px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    width: 90%;
+    text-align: center;
+}
+ 
+#table3,#thead3,#tbody3,#tr3,#th3,#td3{
+    background-color: transparent;
+    color: transparent;
+    border: 3px solid transparent;
+    border-collapse: collapse;
+}
+
+#otro2:target #table3{
+    width: 90%;
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro2:target #thead3{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro2:target #tbody3{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro2:target #tr3{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro2:target #th3{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#otro2:target #td3{
+    background-color: rgb(119, 24, 24);
+    color: white;
+    border: 3px solid white;
+    border-collapse: collapse;
+    transition: 2s;
+}
+
+#tr3 #th3{
+    background-color: transparent;
+}
+
+#otro2:target #tr3 #th3{
+    background-color: blue;
+}
+
+#otro2:target #tr3:hover #td3{
+    background-color: purple;
+    color: white;
+    border: 3px solid white;
+    transform: scale(1.1);
+}
+
+#otro2:target #salidadetabla{
+    color: pink;
+    box-decoration-break: slice;
+}
+
+#internet3{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: transparent;
+    font-size: 16px;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    border: 3px solid transparent;
+}
+
+#otro2:target #internet3{
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    font-size: 16px;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: black;
+    border: 3px solid white;
+    transition: 2s;
 }
