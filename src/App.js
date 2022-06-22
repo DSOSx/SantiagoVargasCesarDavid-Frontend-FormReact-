@@ -1,8 +1,22 @@
+/**  
+* Documentacion de interfaces y clases 
+* @author Santiago Vargas Cesar David
+* @author Nayeli
+* @author Rolando
+* @version 5 - 21 de junio del 2022
+*/
+
 import './App.css';
 import './static/estilo.css';
-import {useState,useEffect} from 'react';
+import {useState,useEffect, version} from 'react';
 import Swal from "sweetalert2";
 
+/** 
+   * @Component App
+   * @param Ningun parametro de entrada
+   * @returns Un componente
+   * @Exception la funcion te manda un error de que no encontró ningun <div></div>
+   */
 function App() {
 
   var tiempo=3000;
@@ -26,6 +40,12 @@ function App() {
 
   const [token,settoken] = useState("");
 
+  /** 
+   * @Component useEffect
+   * @param Ningun parametro de entrada
+   * @returns 
+   * @Exception Ninguna
+   */
   useEffect(() => {
     const interval = setInterval(() => {
       if(navigator.onLine){
@@ -46,38 +66,28 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  /** 
+   * @Component GuardarUsuario
+   * @param event
+   * @returns nada
+   * @Exception Ninguna
+   */
   function GuardarUsuario(event){
      setUsuario(event.target.value);
   }
 
+  /** 
+   * @Component useEffect
+   * @param Ningun.parametro.de.entrada
+   * @returns 
+   * @Exception Ninguna
+   */
   function GuardarContrasena(event){
      setcontrasena(event.target.value);
   }
 
   function Login(event){
      event.preventDefault();
-
-      /*fetch("https://autenticacion-p.herokuapp.com/login/register",{
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({"nombre":"Cesar",
-      "username":"Cesar", "email":"Cesar@correo.com",
-      "estado":"activo", "password":"12345678"})
-      })*/ 
-      
-
-      /*fetch("https://client-app-d.herokuapp.com/api/cliente/",{
-        method: 'GET', 
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': token
-        }})
-      .then(response=>response.json())
-      .then(data=>console.log(data))
-      .catch(e => console.log(e));*/
 
       fetch("https://autenticacion-p.herokuapp.com/login/auth/user",{
       method: 'POST',
@@ -116,17 +126,6 @@ function App() {
            function(isconfirm){
              if(isconfirm){
 
-              /*fetch('https://tarjeta-debito-service.herokuapp.com/api/v1/payments/b7ffa6a8-48ca-4281-b493-ba39dbed4623',{
-                method: "PUT",
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                }
-              })
-              .then(response=>response.json())
-              .then(data=>console.log(data))
-              .catch(error=>console.log(error))*/
-
                 settoken(data.data);
                 setseguimiento("s x x x x x");
                 setdesicion(1);
@@ -135,7 +134,6 @@ function App() {
          );
          }
      })
-     //.catch(error=>console.log(error))
   }
   
   function GuardarrfcCampo(event){
@@ -180,7 +178,6 @@ function App() {
                 }
             });
         }})
-    //.catch(error=>console.log(error))
 
   }
 
@@ -278,7 +275,6 @@ function App() {
           });
       }
     })
-    //.catch(error=>console.log(error))
   }
 
   function BuscarEnPagos(event){
@@ -292,7 +288,6 @@ function App() {
        .then(response=>response.json())
        .then(data=>{
          var foliofacturas="";
-         //var Encontrado=true; 
          var Encontrado=false;
          for(var i=0;i<data.length;i=i+1){
             if(data[i].referenceID==event.target[0].value){
@@ -309,10 +304,7 @@ function App() {
           }).then(
             function(isconfirm){
                 if(isconfirm){
-                  //setdatos(ventasdelcliente);
-                  //setseguimiento("s s x x");
                   setseguimiento("s s s s x x");
-                  //foliofacturas="VENTA-36";
                   ConfirmarCancelacion(foliofacturas);
                 }}
         );
@@ -325,13 +317,11 @@ function App() {
           }).then(
             function(isconfirm){
                 if(isconfirm){
-                  //setdatos([]);
-                  //setseguimiento("x x x x");
+                  setseguimiento("x x x x x x");
                 }}
         );
          }
        })
-       //.catch(error=>console.log(error))
 
   }
 
@@ -365,7 +355,6 @@ function App() {
           }).then(function(isconfirm){
             if(isconfirm){
              BuscarRecibo(foliofacturas);
-             //setseguimiento("s s s x");
             }}
           );
         } else {
@@ -431,13 +420,11 @@ function App() {
                       imageWidth: 400,
                     })
                   })
-                  //.error(error=>console.log(error))
                    setseguimiento("s s s s s x");
                    InsertarDatosEnLaBase(foliofacturas,data.data.fecha);
                 }
             });
         }})
-    //.catch(error=>console.log(error))
   }
 
   function BusquedaPorRecibos(event){
@@ -482,7 +469,6 @@ function App() {
                 }
             });
         }})
-    //.catch(error=>console.log(error))
   }
   
   function CancelarRecibodirectamente(event){
@@ -581,12 +567,10 @@ function App() {
                       imageWidth: 400,
                     })
                   })
-                  //.error(error=>console.log(error))
                     InsertarDatosEnLaBase(idfactura,data.data.fecha);
                 }
             });
         }})
-    //.catch(error=>console.log(error))
 
   }
 
@@ -598,30 +582,8 @@ function App() {
       .then(response=>response.json())
       .then(data=>{
         if(data==null){
-            /*Swal.fire({
-              title: "El servidor de factura no encontró ninguna factura",
-              imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
-              imageWidth: 400,
-              imageHeight: 200
-            }).then(
-              function(isconfirm){
-                  if(isconfirm){
-                    setdatos2([]);
-                  }
-              });*/
               setdatos3([]);
           } else {
-            /*Swal.fire({
-              title: "El servidor de factura si encontró factura",
-              imageUrl: "https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1",
-              imageWidth: 400,
-              imageHeight: 200
-            }).then(
-              function(isconfirm){
-                  if(isconfirm){
-                      setdatos2([data.data]);
-                  }
-              });*/
               for(var i=0;i<data.length;i=i+1){
                 var d = new Date(data[i].fechacancelacion);
                 data[i].fechacancelacion=""+(d.getDate()+1)+"/"+(d.getUTCMonth()+1)+"/"+d.getUTCFullYear();
@@ -632,65 +594,10 @@ function App() {
           }
 
         })
-      //.catch(error=>console.log(error))
   }
 
   function BuscarTarjeta(event){
     event.preventDefault();
-
-    /*Swal.fire({
-      title: "Estas Seguro que quieres realizar esta acción????",
-      imageUrl: "https://www.lifeder.com/wp-content/uploads/2018/10/question-mark-2123967_640.jpg",
-      imageHeight: 200,
-      imageWidth: 400,
-      showCancelButton: true,
-      confirmButtonText: "Si, estoy seguro",
-      cancelButtonText: "Cancelar",
-    }).then(function(isconfirm){
-      if(isconfirm.value){
-
-       Swal.fire({
-         title: "Nombre: "+usuario,
-         input: "password",
-         showCancelButton: true,
-         confirmButtonText: "Confirmar",
-         cancelButtonText: "Cancelar",
-      })
-      .then(condiciones => {
-      if (condiciones.value) {
-        if(condiciones.value==contrasena){
-          Swal.fire({
-           title: "El servidor de trajeta obtuvo con éxito la tarjeta del cliente "+event.target[0].value+" factura: "+event.target[1].value,
-           imageUrl: 'https://i1.wp.com/tekzup.com/wp-content/uploads/2018/06/me-gusta-predecir.jpg?fit=1280%2C720&ssl=1',
-           imageWidth: 400,
-           imageHeight: 200
-          }).then(function(isconfirm){
-            if(isconfirm){
-             BuscarRecibo(event.target[1].value);
-             setseguimiento("s s s x");
-            }}
-          );
-        } else {
-          Swal.fire({
-            title: "La contraseña no es correcta",
-            imageUrl: "https://www.lacomunidaddeltaller.es/wp-content/uploads/2019/06/golferio.jpeg",
-            imageWidth: 400,
-            imageHeight: 200
-          }).then(
-            function(isconfirm){
-                if(isconfirm){
-                }
-            });
-        }
-      } else {
-
-      }
-      });
-
-      } else {
-      }
-    });
-*/
 }
 
   function InsertarDatosEnLaBase(idfactura,fechafactura){
